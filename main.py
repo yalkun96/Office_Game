@@ -49,7 +49,7 @@ def office_survival():
 
 
             for index, choice in enumerate(last_message["choices"]):
-                choice_text = f"{index + 1}. {choice["text"]}"
+                choice_text = f"{index + 1}. {choice['text']}"
 
                 choice_surface = fonts.hud_font.render(
                     choice_text,
@@ -113,11 +113,34 @@ def office_survival():
                         game_state.can_reply = False
                     elif event.key == pygame.K_3:
                         selected_choice = last_message["choices"][2]
-                        game_state.burnout += selected_choice["burnout"]
-                        game_state.burnout = max(0, game_state.burnout)
-                        game_state.suspicion += selected_choice["suspicion"]
-                        game_state.suspicion = max(0, game_state.suspicion)
+                        outcome = random.randint(1, 3)
+                        if outcome == 1:
+                            game_state.burnout -= selected_choice["burnout"]
+                            game_state.burnout = max(0, game_state.burnout)
+                            game_state.suspicion += selected_choice["suspicion"]
+                            game_state.suspicion = max(0, game_state.suspicion)
+                            reply = "Daniel agreed"
+                            game_state.notification.append(reply)
+                        elif outcome == 2:
+                            game_state.suspicion -= selected_choice["suspicion"]
+                            game_state.suspicion = max(0, game_state.suspicion)
+                            game_state.burnout += selected_choice["burnout"]
+                            game_state.burnout = max(0, game_state.burnout)
+                            reply = "Daniel said he is  busy"
+                            game_state.notification.append(reply)
+                        else:
+                            game_state.suspicion += selected_choice["suspicion"]
+                            game_state.suspicion = max(0, game_state.suspicion)
+                            game_state.burnout += selected_choice["burnout"]
+                            game_state.burnout = max(0, game_state.burnout)
+                            reply = "Daniel told to manager"
+                            game_state.notification.append(reply)
                         game_state.can_reply = False
+
+
+
+
+
 
 
 

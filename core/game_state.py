@@ -23,6 +23,8 @@ class GameState:
 
         self.suspicion = 0
 
+        self.notification = []
+
         self.message_pool = [
               {
                 "sender": "Alex",
@@ -159,5 +161,11 @@ class GameState:
         self.active_messages = []
 
         self.can_reply = True
+
+        self.outcome_notifications = [
+            {
+
+            }
+        ]
 
 
