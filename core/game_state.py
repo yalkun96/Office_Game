@@ -46,6 +46,7 @@ class GameState:
 
                     {
                         "text": "Ask Daniel",
+                        "delegate": "Daniel",
                         "burnout": -5,
                         "suspicion": 5
                     }
@@ -72,6 +73,7 @@ class GameState:
 
                     {
                         "text": "Can you ask Josh pls?",
+                        "delegate": "Josh",
                         "burnout": -5,
                         "suspicion": 5
                     }
@@ -98,6 +100,7 @@ class GameState:
 
                     {
                         "text": "Can you just text me what was there later? I got a lot of work man",
+                        "delegate": "you",
                         "burnout": -5,
                         "suspicion": 5
                     }
@@ -124,6 +127,7 @@ class GameState:
 
                     {
                         "text": "Tell this to Sarah, she sill be happy to hear",
+                        "delegate": "Sarah",
                         "burnout": -5,
                         "suspicion": 5
                     }
@@ -150,6 +154,7 @@ class GameState:
 
                     {
                         "text": "Tell'em they can **** ** ****",
+                        "delegate": "Manager",
                         "burnout": -90,
                         "suspicion": 1000
                     }
@@ -159,6 +164,8 @@ class GameState:
         ]
 
         self.active_messages = []
+
+        self.selected_message = 0
 
         self.can_reply = True
 

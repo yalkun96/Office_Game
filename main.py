@@ -38,11 +38,11 @@ def office_survival():
             message = random.choice(game_state.message_pool)
             game_state.active_messages.append(message)
             game_state.can_reply = True
-            next_message_time += random.randint(1, 2)
+            next_message_time += random.randint(5, 10)
 
         task_surface = None
         if game_state.active_messages:
-            last_message = game_state.active_messages[-1]
+            last_message = game_state.active_messages[game_state.selected_message]
             task = f'{last_message["sender"]}:{last_message["text"]}'
             task_surface = fonts.hud_font.render(task, True, (255, 255, 255))
 
@@ -64,6 +64,11 @@ def office_survival():
                 choice_surface,
                     (700, 500 + index * 40)
                 )
+
+                for index, message in enumerate(game_state.active_messages):
+                    sender = message["sender"]
+                    sender_surface = fonts.hud_font.render(sender, True, (255, 255, 255))
+                    screen.blit(sender_surface, (200, 600 + index * 40))
 
 
 
@@ -119,23 +124,32 @@ def office_survival():
                             game_state.burnout = max(0, game_state.burnout)
                             game_state.suspicion += selected_choice["suspicion"]
                             game_state.suspicion = max(0, game_state.suspicion)
-                            reply = "Daniel agreed"
+                            reply = f'{last_message["choices"][2]["delegate"]} agreed'
                             game_state.notification.append(reply)
+
                         elif outcome == 2:
                             game_state.suspicion -= selected_choice["suspicion"]
                             game_state.suspicion = max(0, game_state.suspicion)
                             game_state.burnout += selected_choice["burnout"]
                             game_state.burnout = max(0, game_state.burnout)
-                            reply = "Daniel said he is  busy"
+                            reply = f'{last_message["choices"][2]["delegate"]} said he is  busy'
                             game_state.notification.append(reply)
+
                         else:
                             game_state.suspicion += selected_choice["suspicion"]
                             game_state.suspicion = max(0, game_state.suspicion)
                             game_state.burnout += selected_choice["burnout"]
                             game_state.burnout = max(0, game_state.burnout)
-                            reply = "Daniel told to manager"
+                            reply = f'{last_message["choices"][2]["delegate"]} told to manager'
                             game_state.notification.append(reply)
                         game_state.can_reply = False
+                    if event.key == pygame.K_UP:
+                        if game_state.selected_message < len(game_state.active_messages) - 1:
+                            game_state.selected_message + 1
+                    if event.key == pygame.K_DOWN:
+                        if game_state.selected_message > 0:
+                            game_state.selected_message - 1
+
 
 
 
@@ -155,6 +169,11 @@ def office_survival():
         screen.blit(burnout_surface, (50, 200))
         if task_surface:
             screen.blit(task_surface, (70, 500))
+        if game_state.notification:
+            answer = f'{game_state.notification[-1]}'
+            reaction = fonts.ending_font.render(answer, True, (227, 11, 92))
+            screen.blit(reaction, (500, 300))
+
         pygame.display.flip()
 
     pygame.quit()
